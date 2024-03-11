@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">testVK_shop</string>
+    <string name="retry">Retry</string>
+    <string name="search_hint">Search Product</string>
+    <string name="no_results">No results</string>
+    <string name="tools_description">DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription</string>
+    <string name="tools_price"><strike>100</strike></string>
+</resources>

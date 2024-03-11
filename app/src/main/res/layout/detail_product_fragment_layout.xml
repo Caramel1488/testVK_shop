@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        tools:src="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/product_title_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        tools:text="Title" />
+
+    <TextView
+        android:id="@+id/product_desc_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        tools:text="@string/tools_description" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/product_new_price_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:text="80" />
+
+        <TextView
+            android:id="@+id/product_price_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:alpha="0.5"
+            tools:text="@string/tools_price" />
+
+        <TextView
+            android:id="@+id/product_disc_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:textColor="#FFFF0000"
+            android:textSize="20sp"
+            tools:text="-20%" />
+
+    </LinearLayout>
+
+</LinearLayout>
