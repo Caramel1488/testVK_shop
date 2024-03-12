@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dz2.databinding.GifLoadStateFooterViewItemBinding
+import com.example.dz2.databinding.LoadStateFooterViewItemBinding
 
 class ProductLoadStateViewHolder(
-    private val binding: GifLoadStateFooterViewItemBinding,
+    private val binding: LoadStateFooterViewItemBinding,
     retry: () -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -29,7 +29,7 @@ class ProductLoadStateViewHolder(
         fun create(parent: ViewGroup, retry: () -> Unit): ProductLoadStateViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.load_state_footer_view_item, parent, false)
-            val binding = GifLoadStateFooterViewItemBinding.bind(view)
+            val binding = LoadStateFooterViewItemBinding.bind(view)
             return ProductLoadStateViewHolder(binding, retry)
         }
     }

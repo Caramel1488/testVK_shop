@@ -6,6 +6,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
@@ -19,11 +20,19 @@ import javax.net.ssl.X509TrustManager
 
 interface ProductService {
 
-    @GET("products")
+    @GET("products/")
     suspend fun searchProducts(
         @Query("q") query: String? = null,
         @Query("skip") skip: Int,
         @Query("limit") limit: Int
+    ): ProductSearchResponse
+
+    @GET("/products/categories")
+    suspend fun getAllCategories(): List<String>
+
+    @GET("/products/categories/{category}")
+    suspend fun searchByCategory(
+        @Path("category") category: String
     ): ProductSearchResponse
 
     companion object {
@@ -38,10 +47,11 @@ interface ProductService {
                 .build()
                 .create(ProductService::class.java)
         }
+
         //проблема с SSL
         //javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor for certification path not found.
         private fun configureToIgnoreCertificate(builder: OkHttpClient.Builder): OkHttpClient.Builder {
-            Log.e("Ignore Ssl Certificate","")
+            Log.e("Ignore Ssl Certificate", "")
             try {
 
                 // Create a trust manager that does not validate certificate chains

@@ -1,5 +1,7 @@
 package com.example.dz2
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,7 +11,7 @@ import com.example.dz2.networking.Product
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class GifViewModel(
+class ProductViewModel(
     private val repository: ProductRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -18,6 +20,11 @@ class GifViewModel(
 
     val pagingDataFlow: Flow<PagingData<Product>>
 
+    private var categoryListLiveData = MutableLiveData<List<String>>()
+
+    private var categoryFilter = ""
+    val categoryList: LiveData<List<String>>
+        get() = categoryListLiveData
     val accept: (UiAction) -> Unit
 
     override fun onCleared() {
@@ -26,8 +33,12 @@ class GifViewModel(
         super.onCleared()
     }
 
-    private fun searchGifs(queryString: String): Flow<PagingData<Product>> =
-        repository.getSearchResultStream(queryString)
+    private fun searchProducts(
+        queryString: String,
+        categoryString: String
+    ): Flow<PagingData<Product>> =
+        repository.getSearchResultStream(queryString, categoryString)
+
 
     init {
         val initialQuery: String = savedStateHandle[LAST_SEARCH_QUERY] ?: DEFAULT_QUERY
@@ -48,7 +59,12 @@ class GifViewModel(
             .onStart { emit(UiAction.Scroll(currentQuery = lastQueryScrolled)) }
 
         pagingDataFlow = searches
-            .flatMapLatest { searchGifs(queryString = it.query) }
+            .flatMapLatest {
+                searchProducts(
+                    queryString = it.query,
+                    categoryString = categoryFilter
+                )
+            }
             .cachedIn(viewModelScope)
 
         state = combine(
@@ -68,10 +84,25 @@ class GifViewModel(
                 initialValue = UiState()
             )
 
-        accept = {action ->
+        accept = { action ->
             viewModelScope.launch { actionStateFlow.emit(action) }
         }
     }
+
+    fun getAllCategories() {
+        viewModelScope.launch {
+            categoryListLiveData.postValue(repository.getAllCategories())
+        }
+    }
+
+    fun setCategoryFilter(position: Int) {
+        if (position == categoryList.value!!.size) {
+            categoryFilter = ""
+        }else{
+            categoryFilter = categoryList.value!![position]
+        }
+    }
+
 }
 
 sealed class UiAction(

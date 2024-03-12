@@ -1,6 +1,7 @@
 package com.example.dz2.networking
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Product(
     @SerializedName("id")
@@ -13,7 +14,6 @@ data class Product(
     val price: Float,
     @SerializedName("discountPercentage")
     val discountPercentage: Float,
-    val priceWithDiscount: Float = price * (1 - discountPercentage / 100),
     @SerializedName("rating")
     val rating: Float,
     @SerializedName("stock")
@@ -26,4 +26,4 @@ data class Product(
     val thumbnail: String,
     @SerializedName("images")
     val images: List<String>,
-)
+): Serializable

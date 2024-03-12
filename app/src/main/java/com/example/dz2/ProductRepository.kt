@@ -11,14 +11,24 @@ import kotlinx.coroutines.flow.Flow
 
 class ProductRepository(private val service: ProductService) {
 
-    fun getSearchResultStream(query: String): Flow<PagingData<Product>>{
+    fun getSearchResultStream(query: String, category: String): Flow<PagingData<Product>> {
         return Pager(
             config = PagingConfig(
                 pageSize = ITEMS_PER_PAGE,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = {GifPagingSource(service, query)}
+            pagingSourceFactory = {
+                ProductPagingSource(
+                    service,
+                    query,
+                    Pair(category.isNotEmpty().and(category.isNotBlank()), category)
+                )
+            }
         ).flow
+    }
+
+    suspend fun getAllCategories(): List<String> {
+        return service.getAllCategories()
     }
 
 }
