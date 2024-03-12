@@ -1,4 +1,4 @@
-package com.example.dz2
+package com.example.dz2.ui
 
 import android.os.Bundle
 import android.text.Html
@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.bumptech.glide.Glide
+import com.example.dz2.R
 import com.example.dz2.databinding.DetailProductFragmentLayoutBinding
 import com.example.dz2.networking.Product
 

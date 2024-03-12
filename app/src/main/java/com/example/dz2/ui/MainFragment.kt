@@ -1,11 +1,10 @@
-package com.example.dz2
+package com.example.dz2.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,10 +15,13 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.dz2.*
 import com.example.dz2.databinding.MainFragmentLayoutBinding
 import com.example.dz2.networking.Product
-import com.example.dz34.utils.autoCleared
+import com.example.dz2.utils.Injection
+import com.example.dz2.utils.toast
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -27,23 +29,27 @@ import kotlinx.coroutines.launch
 class MainFragment : Fragment(R.layout.main_fragment_layout) {
 
     private val binding: MainFragmentLayoutBinding by viewBinding(MainFragmentLayoutBinding::bind)
+
     var productAdapter: ProductListAdapter? = null
+
     lateinit var viewModel: ProductViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(
-            this,
+        viewModel = ViewModelProvider(this,
             Injection.provideViewModelFactory(owner = this)
         )[ProductViewModel::class.java]
+
         binding.bindState(
             uiState = viewModel.state,
             pagingData = viewModel.pagingDataFlow,
             uiActions = viewModel.accept
         )
-        filterListener()
         viewModel.getAllCategories()
+
+        filterListener()
+
     }
 
     private fun MainFragmentLayoutBinding.bindState(
@@ -51,18 +57,19 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
         pagingData: Flow<PagingData<Product>>,
         uiActions: (UiAction) -> Unit
     ) {
-        productAdapter = ProductListAdapter {
+        productAdapter = ProductListAdapter(){
             val product: Product = productAdapter!!.getList()[it]
             findNavController().navigate(
-                MainFragmentDirections.actionMainFragmentToDetailProductFragment2(
+                MainFragmentDirections.actionMainFragmentToDetailProductFragment(
                     product
                 )
             )
         }
         list.adapter = productAdapter?.withLoadStateHeaderAndFooter(
-            header = ProductLoadStateAdapter { productAdapter?.retry() },
-            footer = ProductLoadStateAdapter { productAdapter?.retry() }
+            header = GifLoadStateAdapter { productAdapter?.retry() },
+            footer = GifLoadStateAdapter { productAdapter?.retry() }
         )
+
         list.layoutManager = GridLayoutManager(requireContext(), 3)
         list.addItemDecoration(
             DividerItemDecoration(
@@ -77,12 +84,13 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
             )
         )
 
+
         bindSearch(
             uiState = uiState,
             onQueryChanged = uiActions
         )
         bindList(
-            productAdapter = productAdapter!!,
+            productListAdapter = productAdapter!!,
             uiState = uiState,
             pagingData = pagingData,
             onScrollChanged = uiActions
@@ -93,17 +101,17 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
         uiState: StateFlow<UiState>,
         onQueryChanged: (UiAction.Search) -> Unit
     ) {
-        searchProduct.setOnEditorActionListener { _, actionId, _ ->
+        searchGif.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                updateProductListFromInput(onQueryChanged)
+                updateGifListFromInput(onQueryChanged)
                 true
             } else {
                 false
             }
         }
-        searchProduct.setOnKeyListener { _, keyCode, event ->
+        searchGif.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                updateProductListFromInput(onQueryChanged)
+                updateGifListFromInput(onQueryChanged)
                 true
             } else {
                 false
@@ -115,13 +123,13 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
                 .map { it.query }
                 .distinctUntilChanged()
                 .collect {
-                    searchProduct.setText(it)
+                    searchGif.setText(it)
                 }
         }
     }
 
-    private fun MainFragmentLayoutBinding.updateProductListFromInput(onQueryChanged: (UiAction.Search) -> Unit) {
-        searchProduct.text.trim().let {
+    private fun MainFragmentLayoutBinding.updateGifListFromInput(onQueryChanged: (UiAction.Search) -> Unit) {
+        searchGif.text.trim().let {
             if (it.isNotEmpty()) {
                 list.scrollToPosition(0)
                 onQueryChanged(UiAction.Search(query = it.toString()))
@@ -130,20 +138,20 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
     }
 
     private fun MainFragmentLayoutBinding.bindList(
-        productAdapter: ProductListAdapter,
+        productListAdapter: ProductListAdapter,
         uiState: StateFlow<UiState>,
         pagingData: Flow<PagingData<Product>>,
         onScrollChanged: (UiAction.Scroll) -> Unit
     ) {
 
-        retryButton.setOnClickListener { productAdapter.retry() }
+        retryButton.setOnClickListener { productListAdapter.retry() }
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy != 0) onScrollChanged(UiAction.Scroll(currentQuery = uiState.value.query))
             }
         })
 
-        val notLoading = productAdapter.loadStateFlow
+        val notLoading = productListAdapter.loadStateFlow
             .distinctUntilChanged()
             .map { it.source.refresh is LoadState.NotLoading }
 
@@ -160,7 +168,7 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
 
         lifecycleScope.launch {
             pagingData.collectLatest {
-                productAdapter.submitData(it)
+                productListAdapter.submitData(it)
             }
         }
         lifecycleScope.launch {
@@ -169,9 +177,9 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
             }
         }
         lifecycleScope.launch {
-            productAdapter.loadStateFlow.collect { loadState ->
+            productListAdapter.loadStateFlow.collect { loadState ->
                 val isListEmpty =
-                    loadState.refresh is LoadState.NotLoading && productAdapter.itemCount == 0
+                    loadState.refresh is LoadState.NotLoading && productListAdapter.itemCount == 0
                 emptyList.isVisible = isListEmpty
                 list.isVisible = !isListEmpty
                 progressBar.isVisible = loadState.source.refresh is LoadState.Loading
@@ -182,16 +190,11 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
                     ?: loadState.append as? LoadState.Error
                     ?: loadState.prepend as? LoadState.Error
                 errorState?.let {
-                    Toast.makeText(
-                        requireContext(),
-                        "\uD83D\uDE28 Whooops ${it.error}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    toast("\uD83D\uDE28 Whoops ${it.error}")
                 }
             }
         }
     }
-
 
     private fun filterListener() {
         binding.filterImageView.setOnClickListener {
@@ -201,6 +204,7 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
 
     private fun showFilterDialog() {
         AlertDialog.Builder(requireActivity())
+            .setTitle(R.string.ba_day)
             .setNegativeButton(R.string.filter_no) { _, _ -> }
             .setPositiveButton(R.string.filter_yes) { _, _ -> }
             .setSingleChoiceItems(
@@ -208,7 +212,7 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
                     ?: emptyArray(),
                 -1
             ) { _, position ->
-                viewModel.setCategoryFilter(position)
+                //viewModel.setCategoryFilter(position)
             }.create().show()
     }
 }

@@ -1,4 +1,4 @@
-package com.example.dz2
+package com.example.dz2.ui
 
 import android.text.Html
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.dz2.R
 import com.example.dz2.databinding.ItemListProductLayoutBinding
 import com.example.dz2.networking.Product
 
@@ -43,6 +44,7 @@ class ProductListAdapter(
             val imagePath = product.images[0]
             Glide.with(itemView)
                 .load(imagePath)
+
                 .into(binding.imageView)
             with(binding){
                 productTitleTextView.text = product.title
@@ -50,7 +52,7 @@ class ProductListAdapter(
                 val oldPriceText = itemView.context.getString(R.string.old_price, product.price.toInt())
                 productNewPriceTextView.text = newPrice.toString()
                 productPriceTextView.text = Html.fromHtml(oldPriceText)
-                productDiscTextView.text = "-${product.discountPercentage} %"
+                productDiscTextView.text = "-${product.discountPercentage.toInt()} %"
             }
         }
 

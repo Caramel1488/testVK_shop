@@ -1,4 +1,4 @@
-package com.example.dz2
+package com.example.dz2.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,12 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.example.dz2.data.GifRepository
 import com.example.dz2.networking.Product
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ProductViewModel(
-    private val repository: ProductRepository,
+    private val repository: GifRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -20,12 +21,11 @@ class ProductViewModel(
 
     val pagingDataFlow: Flow<PagingData<Product>>
 
-    private var categoryListLiveData = MutableLiveData<List<String>>()
+    val accept: (UiAction) -> Unit
 
-    private var categoryFilter = ""
+    private var categoryListLiveData = MutableLiveData<List<String>>()
     val categoryList: LiveData<List<String>>
         get() = categoryListLiveData
-    val accept: (UiAction) -> Unit
 
     override fun onCleared() {
         savedStateHandle[LAST_SEARCH_QUERY] = state.value.query
@@ -33,12 +33,8 @@ class ProductViewModel(
         super.onCleared()
     }
 
-    private fun searchProducts(
-        queryString: String,
-        categoryString: String
-    ): Flow<PagingData<Product>> =
-        repository.getSearchResultStream(queryString, categoryString)
-
+    private fun searchProducts(queryString: String): Flow<PagingData<Product>> =
+        repository.getSearchResultStream(queryString)
 
     init {
         val initialQuery: String = savedStateHandle[LAST_SEARCH_QUERY] ?: DEFAULT_QUERY
@@ -59,12 +55,7 @@ class ProductViewModel(
             .onStart { emit(UiAction.Scroll(currentQuery = lastQueryScrolled)) }
 
         pagingDataFlow = searches
-            .flatMapLatest {
-                searchProducts(
-                    queryString = it.query,
-                    categoryString = categoryFilter
-                )
-            }
+            .flatMapLatest { searchProducts(queryString = it.query) }
             .cachedIn(viewModelScope)
 
         state = combine(
@@ -94,19 +85,9 @@ class ProductViewModel(
             categoryListLiveData.postValue(repository.getAllCategories())
         }
     }
-
-    fun setCategoryFilter(position: Int) {
-        if (position == categoryList.value!!.size) {
-            categoryFilter = ""
-        }else{
-            categoryFilter = categoryList.value!![position]
-        }
-    }
-
 }
 
-sealed class UiAction(
-) {
+sealed class UiAction {
     data class Search(val query: String) : UiAction()
     data class Scroll(
         val currentQuery: String

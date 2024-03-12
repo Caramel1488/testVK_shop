@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package com.example.dz2
+package com.example.dz2.utils
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.savedstate.SavedStateRegistryOwner
+import com.example.dz2.data.GifRepository
 import com.example.dz2.networking.ProductService
+import com.example.dz2.ui.ViewModelFactory
 
 /**
  * Class that handles object creation.
@@ -31,8 +33,8 @@ object Injection {
      * Creates an instance of [GithubRepository] based on the [GithubService] and a
      * [GithubLocalCache]
      */
-    private fun provideGithubRepository(): ProductRepository {
-        return ProductRepository(ProductService.create())
+    private fun provideGithubRepository(): GifRepository {
+        return GifRepository(ProductService.create())
     }
 
     /**

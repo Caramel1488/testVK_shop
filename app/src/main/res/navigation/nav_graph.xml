@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.dz2.MainFragment"
-        android:label="MainFragment"
-        tools:layout="@layout/main_fragment_layout">
+        android:name="com.example.dz2.ui.MainFragment"
+        android:label="MainFragment" >
         <action
-            android:id="@+id/action_mainFragment_to_detailProductFragment2"
+            android:id="@+id/action_mainFragment_to_detailProductFragment"
             app:destination="@id/detailProductFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailProductFragment"
-        android:name="com.example.dz2.DetailProductFragment"
-        android:label="DetailProductFragment"
-        tools:layout="@layout/detail_product_fragment_layout">
+        android:name="com.example.dz2.ui.DetailProductFragment"
+        android:label="DetailProductFragment" >
         <argument
             android:name="detailProduct"
             app:argType="com.example.dz2.networking.Product" />

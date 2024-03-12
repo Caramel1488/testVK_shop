@@ -20,9 +20,9 @@ import javax.net.ssl.X509TrustManager
 
 interface ProductService {
 
-    @GET("products/")
+    @GET("products")
     suspend fun searchProducts(
-        @Query("q") query: String? = null,
+        @Query("q") query: String,
         @Query("skip") skip: Int,
         @Query("limit") limit: Int
     ): ProductSearchResponse
