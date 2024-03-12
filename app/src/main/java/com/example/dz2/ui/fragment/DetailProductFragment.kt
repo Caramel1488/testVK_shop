@@ -21,7 +21,7 @@ import com.example.dz2.utils.autoCleared
 class DetailProductFragment: Fragment(R.layout.detail_product_fragment_layout) {
 
     private val binding: DetailProductFragmentLayoutBinding by viewBinding(DetailProductFragmentLayoutBinding::bind)
-    private val args: com.example.dz2.ui.DetailProductFragmentArgs by navArgs()
+    private val args: DetailProductFragmentArgs by navArgs()
     private var detailImagesListAdapter: DetailImagesListAdapter by autoCleared()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -53,7 +53,7 @@ class DetailProductFragment: Fragment(R.layout.detail_product_fragment_layout) {
             productPriceTextView.text = Html.fromHtml(oldPriceText)
             productDiscTextView.text = "-${detailProduct.discountPercentage.toInt()} %"
             productRatingTextView.text = "${detailProduct.rating}/5 in ${detailProduct.category}"
-            detailImagesListAdapter.submitList(detailProduct.images)
+            detailImagesListAdapter.submitList(listOf(detailProduct.thumbnail) + detailProduct.images)
         }
     }
 

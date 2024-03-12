@@ -41,7 +41,7 @@ class ProductListAdapter(
         }
 
         fun bind(product: Product) {
-            val imagePath = product.images[0]
+            val imagePath = product.thumbnail
             Glide.with(itemView)
                 .load(imagePath)
                 .error(itemView.context.getDrawable(R.drawable.baseline_error_24))
