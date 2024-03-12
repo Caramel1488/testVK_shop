@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.example.dz2.ui.MainFragment"
+        android:name="com.example.dz2.ui.fragment.MainFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_detailProductFragment"
@@ -14,10 +14,10 @@
     </fragment>
     <fragment
         android:id="@+id/detailProductFragment"
-        android:name="com.example.dz2.ui.DetailProductFragment"
+        android:name="com.example.dz2.ui.fragment.DetailProductFragment"
         android:label="DetailProductFragment" >
         <argument
             android:name="detailProduct"
-            app:argType="com.example.dz2.networking.Product" />
+            app:argType="com.example.dz2.data.model.Product" />
     </fragment>
 </navigation>

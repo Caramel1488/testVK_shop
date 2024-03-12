@@ -1,85 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:gravity="center"
+    android:orientation="vertical">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detailImagesList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:scrollbars="horizontal"
+        app:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/item_detail_images_list_layout"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        />
+
+    <TextView
+        android:id="@+id/product_title_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/guideline3"
+        tools:text="Title" />
+
+    <TextView
+        android:id="@+id/product_desc_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        tools:text="@string/tools_description"
+        app:layout_constraintTop_toBottomOf="@id/product_title_text_view"/>
+
+    <LinearLayout
+        android:id="@+id/price_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center|bottom"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/product_desc_text_view">
+
+        <TextView
+            android:id="@+id/product_new_price_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            tools:text="80"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/product_price_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:alpha="0.5"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            tools:text="@string/tools_price" />
+
+        <TextView
+            android:id="@+id/product_disc_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            android:textColor="#FFFF0000"
+            android:textSize="20sp"
+            tools:text="-20%" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center|bottom"
+        app:layout_constraintTop_toBottomOf="@id/price_layout">
 
         <ImageView
-            android:id="@+id/product_image_view"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="fitCenter"
-            tools:src="@drawable/ic_launcher_background" />
+            android:src="@drawable/baseline_star_24" />
 
         <TextView
-            android:id="@+id/product_title_text_view"
-            android:layout_width="match_parent"
+            android:id="@+id/product_rating_text_view"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            tools:text="Title" />
-
-        <TextView
-            android:id="@+id/product_desc_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
+            android:layout_marginStart="4dp"
             android:textColor="@color/black"
             android:textSize="16sp"
-            tools:text="@string/tools_description" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center|bottom"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/product_new_price_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                tools:text="80" />
-
-            <TextView
-                android:id="@+id/product_price_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:alpha="0.5"
-                android:gravity="center"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                tools:text="@string/tools_price" />
-
-            <TextView
-                android:id="@+id/product_disc_text_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:gravity="center"
-                android:textColor="#FFFF0000"
-                android:textSize="20sp"
-                tools:text="-20%" />
-
-        </LinearLayout>
-
+            tools:text="4.6/5 in category" />
     </LinearLayout>
-</ScrollView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.33" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

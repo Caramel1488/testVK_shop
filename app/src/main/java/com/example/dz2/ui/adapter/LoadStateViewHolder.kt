@@ -1,4 +1,4 @@
-package com.example.dz2.ui
+package com.example.dz2.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dz2.R
 import com.example.dz2.databinding.LoadStateFooterViewItemBinding
 
-class GifLoadStateViewHolder(
+class LoadStateViewHolder(
     private val binding: LoadStateFooterViewItemBinding,
     retry: () -> Unit
 ) : RecyclerView.ViewHolder(binding.root) {
@@ -27,11 +27,11 @@ class GifLoadStateViewHolder(
     }
 
     companion object {
-        fun create(parent: ViewGroup, retry: () -> Unit): GifLoadStateViewHolder {
+        fun create(parent: ViewGroup, retry: () -> Unit): LoadStateViewHolder {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.load_state_footer_view_item, parent, false)
             val binding = LoadStateFooterViewItemBinding.bind(view)
-            return GifLoadStateViewHolder(binding, retry)
+            return LoadStateViewHolder(binding, retry)
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.dz2.ui
+package com.example.dz2.ui.adapter
 
 import android.text.Html
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.dz2.R
 import com.example.dz2.databinding.ItemListProductLayoutBinding
-import com.example.dz2.networking.Product
+import com.example.dz2.data.model.Product
 
 class ProductListAdapter(
     private val onClick: (position: Int) -> Unit
@@ -44,7 +44,7 @@ class ProductListAdapter(
             val imagePath = product.images[0]
             Glide.with(itemView)
                 .load(imagePath)
-
+                .error(itemView.context.getDrawable(R.drawable.baseline_error_24))
                 .into(binding.imageView)
             with(binding){
                 productTitleTextView.text = product.title

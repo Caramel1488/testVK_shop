@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-package com.example.dz2.ui
+package com.example.dz2.vm
 
 import androidx.lifecycle.AbstractSavedStateViewModelFactory
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
-import com.example.dz2.data.GifRepository
+import com.example.dz2.data.ProductRepository
 
 /**
  * Factory for ViewModels
  */
 class ViewModelFactory(
     owner: SavedStateRegistryOwner,
-    private val repository: GifRepository
+    private val repository: ProductRepository
 ) : AbstractSavedStateViewModelFactory(owner, null) {
 
     override fun <T : ViewModel?> create(

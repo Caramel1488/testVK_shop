@@ -1,10 +1,10 @@
-package com.example.dz2.ui
+package com.example.dz2.ui.paging
 
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.dz2.networking.Product
-import com.example.dz2.networking.ProductService
+import com.example.dz2.data.model.Product
+import com.example.dz2.data.networking.ProductService
 import retrofit2.HttpException
 import java.io.IOException
 

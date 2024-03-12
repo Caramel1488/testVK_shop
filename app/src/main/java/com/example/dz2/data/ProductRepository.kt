@@ -4,14 +4,14 @@ package com.example.dz2.data
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.example.dz2.ui.ProductPagingSource
-import com.example.dz2.ui.ITEMS_PER_PAGE
-import com.example.dz2.networking.Product
-import com.example.dz2.networking.ProductService
+import com.example.dz2.ui.paging.ProductPagingSource
+import com.example.dz2.ui.paging.ITEMS_PER_PAGE
+import com.example.dz2.data.model.Product
+import com.example.dz2.data.networking.ProductService
 import kotlinx.coroutines.flow.Flow
 
 
-class GifRepository(private val service: ProductService) {
+class ProductRepository(private val service: ProductService) {
 
     fun getSearchResultStream(query: String): Flow<PagingData<Product>>{
         return Pager(

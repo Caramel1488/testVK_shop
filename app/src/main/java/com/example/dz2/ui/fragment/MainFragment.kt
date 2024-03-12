@@ -1,4 +1,4 @@
-package com.example.dz2.ui
+package com.example.dz2.ui.fragment
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -15,13 +15,17 @@ import androidx.paging.PagingData
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.dz2.*
 import com.example.dz2.databinding.MainFragmentLayoutBinding
-import com.example.dz2.networking.Product
+import com.example.dz2.data.model.Product
+import com.example.dz2.ui.adapter.LoadStateAdapter
+import com.example.dz2.ui.adapter.ProductListAdapter
 import com.example.dz2.utils.Injection
 import com.example.dz2.utils.toast
+import com.example.dz2.vm.ProductViewModel
+import com.example.dz2.vm.UiAction
+import com.example.dz2.vm.UiState
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -66,8 +70,8 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
             )
         }
         list.adapter = productAdapter?.withLoadStateHeaderAndFooter(
-            header = GifLoadStateAdapter { productAdapter?.retry() },
-            footer = GifLoadStateAdapter { productAdapter?.retry() }
+            header = LoadStateAdapter { productAdapter?.retry() },
+            footer = LoadStateAdapter { productAdapter?.retry() }
         )
 
         list.layoutManager = GridLayoutManager(requireContext(), 3)
@@ -101,17 +105,17 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
         uiState: StateFlow<UiState>,
         onQueryChanged: (UiAction.Search) -> Unit
     ) {
-        searchGif.setOnEditorActionListener { _, actionId, _ ->
+        searchProduct.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_GO) {
-                updateGifListFromInput(onQueryChanged)
+                updateProductListFromInput(onQueryChanged)
                 true
             } else {
                 false
             }
         }
-        searchGif.setOnKeyListener { _, keyCode, event ->
+        searchProduct.setOnKeyListener { _, keyCode, event ->
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-                updateGifListFromInput(onQueryChanged)
+                updateProductListFromInput(onQueryChanged)
                 true
             } else {
                 false
@@ -123,13 +127,13 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
                 .map { it.query }
                 .distinctUntilChanged()
                 .collect {
-                    searchGif.setText(it)
+                    searchProduct.setText(it)
                 }
         }
     }
 
-    private fun MainFragmentLayoutBinding.updateGifListFromInput(onQueryChanged: (UiAction.Search) -> Unit) {
-        searchGif.text.trim().let {
+    private fun MainFragmentLayoutBinding.updateProductListFromInput(onQueryChanged: (UiAction.Search) -> Unit) {
+        searchProduct.text.trim().let {
             if (it.isNotEmpty()) {
                 list.scrollToPosition(0)
                 onQueryChanged(UiAction.Search(query = it.toString()))

@@ -51,7 +51,8 @@
             android:gravity="center"
             android:textColor="@color/black"
             android:textSize="16sp"
-            tools:text="80" />
+            tools:text="80"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/product_price_text_view"

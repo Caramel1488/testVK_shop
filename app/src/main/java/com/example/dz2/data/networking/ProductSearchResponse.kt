@@ -1,5 +1,6 @@
-package com.example.dz2.networking
+package com.example.dz2.data.networking
 
+import com.example.dz2.data.model.Product
 import com.google.gson.annotations.SerializedName
 
 data class ProductSearchResponse(

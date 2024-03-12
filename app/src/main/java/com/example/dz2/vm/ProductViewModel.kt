@@ -1,4 +1,4 @@
-package com.example.dz2.ui
+package com.example.dz2.vm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -7,13 +7,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.dz2.data.GifRepository
-import com.example.dz2.networking.Product
+import com.example.dz2.data.ProductRepository
+import com.example.dz2.data.model.Product
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 class ProductViewModel(
-    private val repository: GifRepository,
+    private val repository: ProductRepository,
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 

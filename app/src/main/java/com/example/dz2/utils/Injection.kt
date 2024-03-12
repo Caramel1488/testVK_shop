@@ -18,9 +18,9 @@ package com.example.dz2.utils
 
 import androidx.lifecycle.ViewModelProvider
 import androidx.savedstate.SavedStateRegistryOwner
-import com.example.dz2.data.GifRepository
-import com.example.dz2.networking.ProductService
-import com.example.dz2.ui.ViewModelFactory
+import com.example.dz2.data.ProductRepository
+import com.example.dz2.data.networking.ProductService
+import com.example.dz2.vm.ViewModelFactory
 
 /**
  * Class that handles object creation.
@@ -28,13 +28,8 @@ import com.example.dz2.ui.ViewModelFactory
  * testing, where needed.
  */
 object Injection {
-
-    /**
-     * Creates an instance of [GithubRepository] based on the [GithubService] and a
-     * [GithubLocalCache]
-     */
-    private fun provideGithubRepository(): GifRepository {
-        return GifRepository(ProductService.create())
+    private fun provideProductRepository(): ProductRepository {
+        return ProductRepository(ProductService.create())
     }
 
     /**
@@ -42,6 +37,6 @@ object Injection {
      * [ViewModel] objects.
      */
     fun provideViewModelFactory(owner: SavedStateRegistryOwner): ViewModelProvider.Factory {
-        return ViewModelFactory(owner, provideGithubRepository())
+        return ViewModelFactory(owner, provideProductRepository())
     }
 }

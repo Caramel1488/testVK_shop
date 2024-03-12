@@ -1,4 +1,4 @@
-package com.example.dz2.networking
+package com.example.dz2.data.networking
 
 import android.util.Log
 import com.example.dz2.BuildConfig
