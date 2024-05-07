@@ -74,20 +74,7 @@ class MainFragment : Fragment(R.layout.main_fragment_layout) {
             footer = LoadStateAdapter { productAdapter?.retry() }
         )
 
-        list.layoutManager = GridLayoutManager(requireContext(), 3)
-        list.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.VERTICAL
-            )
-        )
-        list.addItemDecoration(
-            DividerItemDecoration(
-                context,
-                DividerItemDecoration.HORIZONTAL
-            )
-        )
-
+        list.layoutManager = GridLayoutManager(requireContext(), 2)
 
         bindSearch(
             uiState = uiState,

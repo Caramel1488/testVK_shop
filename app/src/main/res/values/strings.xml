@@ -5,7 +5,7 @@
     <string name="no_results">No results</string>
     <string name="tools_description">DescriptionDescriptionDescriptionDescriptionDescriptionDescriptionDescription</string>
     <string name="tools_price"><strike>100</strike></string>
-    <string name="old_price">&lt;s>%1$d&lt;/s></string>
+    <string name="old_price">&lt;s>%1$d $&lt;/s></string>
     <string name="filter_no">No</string>
     <string name="filter_yes">Done</string>
     <string name="ba_day">Не сделано</string>

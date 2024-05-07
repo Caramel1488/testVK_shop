@@ -50,7 +50,7 @@ class ProductListAdapter(
                 productTitleTextView.text = product.title
                 val newPrice = (product.price * (1 - product.discountPercentage / 100)).toInt()
                 val oldPriceText = itemView.context.getString(R.string.old_price, product.price.toInt())
-                productNewPriceTextView.text = newPrice.toString()
+                productNewPriceTextView.text = "$newPrice $"
                 productPriceTextView.text = Html.fromHtml(oldPriceText)
                 productDiscTextView.text = "-${product.discountPercentage.toInt()} %"
             }

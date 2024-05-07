@@ -49,7 +49,7 @@ class DetailProductFragment: Fragment(R.layout.detail_product_fragment_layout) {
             productDescTextView.text = detailProduct.description
             val newPrice = (detailProduct.price * (1 - detailProduct.discountPercentage / 100)).toInt()
             val oldPriceText = getString(R.string.old_price, detailProduct.price.toInt())
-            productNewPriceTextView.text = newPrice.toString()
+            productNewPriceTextView.text = "$newPrice $"
             productPriceTextView.text = Html.fromHtml(oldPriceText)
             productDiscTextView.text = "-${detailProduct.discountPercentage.toInt()} %"
             productRatingTextView.text = "${detailProduct.rating}/5 in ${detailProduct.category}"
